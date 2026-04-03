@@ -1,25 +1,65 @@
-# Overview
-In this guide, we will explore various methods for imputing continuous numerical variables and illustrate the outcomes of each technique. Our focus will be on basic imputation approaches like mean and median imputation, as well as more complex strategies like K-nearest neighbors (KNN).
+# Missing Data Imputation Tutorial
 
-# About the Dataset
-This dataset is originally from the National Institute of Diabetes and Digestive and Kidney Diseases. The objective of the dataset is to diagnostically predict whether a patient has diabetes, based on certain diagnostic measurements included in the dataset. Several constraints were placed on the selection of these instances from a larger database. All patients here are females at least 21 years old of Pima Indian heritage. Variables in the dataset include number of pregnancies, glucose, blood pressure, skin thickness, insulin, BMI, age, etc..
+This repo shows a simple comparison of two ways to fill in missing values in a continuous numeric variable: basic imputation with mean or median, and a more context-aware approach with KNN.
 
-For a comprehensive exploratory analysis of the data, check out the **df_profile.html** file attached. 
+The example uses the `Insulin` column from the diabetes dataset. That column has a large amount of missing data, so it is a good test case for seeing how different imputation methods behave.
 
-# Variable to Impute
-In our dataset, the primary variable we'll concentrate on for imputation is 'Insulin,' which quantifies the 2-hour serum insulin level in micro-units per milliliter (mu U/ml) and has 48% missing values.
+## What This Covers
 
-# Summary of Results
-In our examination of the dataset, we specifically looked to address the missing values in the 'Insulin' variable, which represents the 2-hour serum insulin levels. We employed two distinct imputation methods: simple imputation (utilizing mean and median values) and advanced imputation (leveraging KNN or K-nearest neighbors).
+The goal is to answer a simple question: when a numeric variable has a lot of missing values, what happens if we fill the gaps with a quick average versus a method that looks at similar rows in the dataset?
 
-Initially, we assessed the impact of straightforward approaches like removing missing data or replacing them with central tendency measures—mean and median. Although quick and easy, these simple imputation methods introduced notable biases, particularly when the 'Insulin' variable had a significant amount of missing data. Such replacements can skew the variable's original distribution and adversely affect its correlation with other variables in the dataset.
+This tutorial walks through:
 
-Shifting to advanced imputation, we implemented the KNN method, which computes the missing value based on the most similar instances in the dataset. By using KNN, we integrated other variables from the dataset into our imputation process. By doing so, we found that addressing the missing values in the context of the entire dataset—considering the interdependencies among all variables—yielded a more precise and less biased imputation. This technique preserves the underlying structure and relationships within the data more effectively than simple mean or median replacements. The KNN approach produced a distribution for 'Insulin' that closely resembled its original, complete dataset distribution, with a reduced bias and a more realistic representation of the variable's relationship with other features.
+1. The dataset and the missing-value problem
+2. Why `Insulin` is the target variable
+3. How mean and median imputation behave
+4. How KNN imputation works
+5. What changes in the data after each method
 
-In essence, while simple imputation methods are easy to implement, they often fall short in preserving the true characteristics of the data, especially in cases of extensive missingness. In contrast, advanced methods like KNN, though computationally heavier, provide a more sophisticated solution by utilizing the broader data context, which in turn results in a more accurate and reliable imputation.
+## How It Works
 
+The notebook compares the methods in a clear sequence:
 
+1. Load the diabetes dataset
+2. Review the missing-value pattern
+3. Apply simple imputation with mean and median
+4. Apply KNN imputation using the rest of the dataset as context
+5. Compare the results and look at how well each method preserves the original structure of the data
 
+The main takeaway is simple: mean and median are fast, but they can flatten the shape of the data. KNN takes more work, but it usually gives a more realistic result when missingness is substantial.
 
+## What’s In The Repo
 
+- [`notebooks/diabetes_missing_data_imputation.ipynb`](notebooks/diabetes_missing_data_imputation.ipynb) - main tutorial notebook
+- [`data/diabetes_data.csv`](data/diabetes_data.csv) - source dataset used in the tutorial
+- [`reports/df_profile.html`](reports/df_profile.html) - exploratory data profile for a quick scan of the dataset
+- [`reports/imputing_continuous_numeric_variables.pdf`](reports/imputing_continuous_numeric_variables.pdf) - written summary of the analysis
+- [`references/DataDictionary.pdf`](references/DataDictionary.pdf) - variable reference for the dataset
 
+## How To Use It
+
+Start with the notebook in `notebooks/`.
+
+If you want the shortest path, read `reports/imputing_continuous_numeric_variables.pdf` first. It gives the summary in a compact form.
+
+If you want more context on the raw data, open `reports/df_profile.html` and `references/DataDictionary.pdf`.
+
+## File Layout
+
+```text
+data/
+  diabetes_data.csv
+notebooks/
+  diabetes_missing_data_imputation.ipynb
+reports/
+  df_profile.html
+  imputing_continuous_numeric_variables.pdf
+references/
+  DataDictionary.pdf
+```
+
+## Notes
+
+- The notebook now reads the dataset from `../data/diabetes_data.csv`.
+- The notebook writes the profile report to `../reports/df_profile.html`.
+- The repo keeps the root clean so the first thing you see is the guide, not the files.
